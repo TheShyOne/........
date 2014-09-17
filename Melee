@@ -1,0 +1,156 @@
+-- skill
+-- passive / active / togga
+-- mastery arcane move
+-- name
+
+local Skill = {}
+Skill.Name = "skill_p_m_melee"
+Skill.PrintName = "Melee Mastery"
+Skill.Category = CATEGORY_MELEE_PASSIVE
+Skill.Icon = "icons/bt/weapon_sword"
+Skill.Desc = {}
+Skill.Desc["story"] = "Gives you better strength and critical slashes. Can carry more weight."
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Level =  i*4
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Increase Strength by "..i*3 .." and Carry Weight by ".. i*2 .. "\n\nLevel Requirement " .. Skill.Requirements[i].Level - 4
+end
+Skill.Active = false
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+	local tblStatTable = {}
+	for i=0, 7 do
+		tblStatTable[i] = i*3
+	end
+	plyPlayer:AddStat("stat_strength", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+	for i=0, 7 do
+		tblStatTable[i] = i*2
+	end
+	plyPlayer:AddStat("stat_maxweight", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+
+local Skill = {}
+Skill.Name = "skill_p_m_ironskin"
+Skill.PrintName = "Momentum"
+Skill.Category = CATEGORY_MELEE_PASSIVE
+Skill.Icon = "icons/bt/weapon_sword"
+Skill.Desc = {}
+Skill.Desc["story"] = "Learn to use your momentum as a weapon."
+Skill.NumName = {}
+Skill.NumName[0] = ""
+Skill.NumName[1] = "Max"
+Skill.Levels = 1
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Level =  i*4
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Every melee attack does 0.2% more damage for every Kg in your inventory."
+end
+Skill.Active = false
+Skill.Hooks = {}
+Skill.Hooks["damage_mod"] = function(plyPlayer, intSkillLevel, intDamage)
+	if plyPlayer:IsMelee() && intSkillLevel > 0 then
+		intDamage = intDamage + (intDamage * ((0.2 * (plyPlayer.Weight or 0)) / 100))
+	end
+	return intDamage
+end
+Register.Skill(Skill)
+
+
+local Skill = {}
+Skill.Name = "skill_p_m_yinyan"
+Skill.PrintName = "Yin and Yang Training"
+Skill.Category = CATEGORY_MELEE_PASSIVE
+Skill.Icon = "icons/bt/weapon_sword"
+Skill.Desc = {}
+Skill.Desc["story"] = "By knowing Yin and Yangs real meaning, You finally understand how to control the energy efficiently."
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Skills[ "skill_p_m_melee" ] = i
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Decreases Active Skill Cool down by "..i*5 .."%." .. "\n\nLevel Requirement 1"
+end
+Skill.Active = false
+function melee_adjcool( plyPlayer, cool )
+	return ( cool ) * ( 1 - .05 * plyPlayer:GetSkill( "skill_p_m_yinyan" ) )
+end
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+
+local Skill = {}
+Skill.Name = "skill_p_m_qui"
+Skill.PrintName = "Qui Training"
+Skill.Category = CATEGORY_MELEE_PASSIVE
+Skill.Icon = "icons/bt/weapon_sword"
+Skill.Desc = {}
+Skill.Desc["story"] = "You can make your skills better with training your Qui. ( WARRIOR ONLY )"
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Skills[ "skill_p_m_melee" ] = i
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Increases Active Skill Damage by "..i*5 .."%." .. "\n\nLevel Requirement 1"
+end
+Skill.Active = false
+function melee_wardam( plyPlayer, dam )
+	return ( dam ) * ( 1 + .1 * plyPlayer:GetSkill( "skill_p_m_qui" ) )
+end
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+
+local Skill = {}
+Skill.Name = "skill_p_m_st"
+Skill.PrintName = "Sword Skill Training"
+Skill.Category = CATEGORY_MELEE_PASSIVE
+Skill.Icon = "icons/bt/weapon_sword"
+Skill.Desc = {}
+Skill.Desc["story"] = "You can make your skills better with training your Sword Skill ( GLADIATOR ONLY )."
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Skills[ "skill_p_m_melee" ] = i
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Increases Active Skill Damage by "..i*5 .."%."  .. "\n\nLevel Requirement 1"
+end
+Skill.Active = false
+function melee_gladam( plyPlayer, dam )
+	return ( dam ) * ( 1 + .05 * plyPlayer:GetSkill( "skill_p_m_st" ) )
+end
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
