@@ -1,0 +1,211 @@
+-- skill
+-- passive / active / togga
+-- mastery arcane move
+-- name
+
+local Skill = {}
+Skill.Name = "skill_p_m_endurance"
+Skill.PrintName = "Endurance"
+Skill.Icon = "icons/bt/item_elite"
+Skill.Desc = {}
+Skill.Desc["story"] = "You can take more damage and stresses from the outside."
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Level =  i*4
+end
+for i = 1, 7 do
+Skill.Desc[i] = "Increase Max Health by ".. i*10 .. "\n\nLevel Requirement " .. Skill.Requirements[i].Level - 4
+end
+Skill.Category = CATEGORY_COMMON_PASSIVE
+Skill.Active = false
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+	local tblStatTable = {}
+	tblStatTable[0] = 10
+	tblStatTable[1] = 20
+	tblStatTable[2] = 30
+	tblStatTable[3] = 50
+	tblStatTable[4] = 70
+	tblStatTable[5] = 90
+	tblStatTable[6] = 120
+	tblStatTable[7] = 150
+	plyPlayer:AddStat("stat_maxhealth", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+	plyPlayer:SetHealth( plyPlayer:GetMaxHealth() )
+	
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+
+local Skill = {}
+Skill.Name = "skill_p_m_agility"
+Skill.PrintName = "Agility Training"
+Skill.Icon = "icons/bt/skill_agility"
+Skill.Desc = {}
+Skill.Desc["story"] = "Gives you faster aim and faster reloads"
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Level = i*6
+end
+for i = 1, 7 do
+Skill.Desc[i] = "Increase Agility by ".. i*1 .. "\n\nLevel Requirement " .. Skill.Requirements[i].Level - 6
+end
+Skill.Category = CATEGORY_COMMON_PASSIVE
+Skill.Active = false
+
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+	local tblStatTable = {}
+	for i = 0, 7 do
+		tblStatTable[i] = i
+	end
+	plyPlayer:AddStat("stat_agility", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+-- skill
+-- passive / active / togga
+-- mastery arcane move
+-- name
+
+local Skill = {}
+Skill.Name = "skill_p_c_weight"
+Skill.PrintName = "Mule"
+Skill.Category = CATEGORY_COMMON_PASSIVE
+Skill.Icon = "icons/bt/icon_bag"
+Skill.Desc = {}
+Skill.Desc["story"] = "With a stronger back you are able to carry more weight."
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Level =  i*4
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Increase Carry Weight by ".. i*3 .. "\n\nLevel Requirement " .. Skill.Requirements[i].Level - 4
+end
+Skill.Active = false
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+	local tblStatTable = {}
+	for i=0, 7 do
+		tblStatTable[i] = i*3
+	end
+	plyPlayer:AddStat("stat_maxweight", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+local Skill = {}
+Skill.Name = "skill_p_c_luck"
+Skill.PrintName = "Luck"
+Skill.Category = CATEGORY_COMMON_PASSIVE
+Skill.Icon = "icons/junk_gnome"
+Skill.Desc = {}
+Skill.Desc["story"] = "Being more lucky increases your chances of critical hits and finding rare loot."
+Skill.Requirements = {}
+for i = 0, 7 do
+	Skill.Requirements[i] = {}
+	Skill.Requirements[i].Skills = {}
+	Skill.Requirements[i].Level =  i*4
+end
+for i=1, 7 do
+	Skill.Desc[i] = "Increase Luck by ".. i*2 .. "\n\nLevel Requirement " .. Skill.Requirements[i].Level - 4
+end
+Skill.Active = false
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+	local tblStatTable = {}
+	for i=0, 7 do
+		tblStatTable[i] = i*2
+	end
+	plyPlayer:AddStat("stat_luck", tblStatTable[intSkillLevel] - tblStatTable[intOldSkillLevel])
+end
+function Skill:OnUse( plyPlayer, intSkillLevel, boolSwitch )
+	return
+end
+Register.Skill(Skill)
+
+local Skill = {}
+Skill.Name = "skill_p_c_consumeless"
+Skill.PrintName = "Consume Less!"
+Skill.Category = CATEGORY_COMMON_PASSIVE
+Skill.Icon = "icons/junk_metalcan2"
+Skill.Desc = {}
+Skill.Desc["story"] = "Gain more health from food items. (health kits too)."
+Skill.Desc[1] = "You get 2% more health"
+Skill.Desc[2] = "You get 4% more health"
+Skill.Desc[3] = "You get 6% more health"
+Skill.Desc[4] = "You get 8% more health"
+Skill.Desc[5] = "You get 10% more health"
+Skill.Desc[6] = "You get 15% more health"
+Skill.Desc[7] = "You get 20% more health"
+Skill.Tier = 1
+Skill.Levels = 7
+Skill.Active = false
+Skill.Hooks = {}
+Skill.Hooks["food_mod"] = function(plyPlayer, intSkillLevel, intHealthToAdd)
+	if intSkillLevel > 0 then
+		local intHealthToAddP = 2
+		if intSkillLevel == 2 then intHealthToAddP = 4 end
+		if intSkillLevel == 3 then intHealthToAddP = 6 end
+		if intSkillLevel == 4 then intHealthToAddP = 8 end
+		if intSkillLevel == 5 then intHealthToAddP = 10 end
+		if intSkillLevel == 6 then intHealthToAddP = 15 end
+		if intSkillLevel == 7 then intHealthToAddP = 20 end
+		intHealthToAdd = intHealthToAdd + (intHealthToAdd * (intHealthToAddP / 100))
+	end
+	return intHealthToAdd
+end
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+end
+Register.Skill(Skill)
+
+local Skill = {}
+Skill.Name = "skill_p_c_barter"
+Skill.PrintName = "Barter"
+Skill.Category = CATEGORY_COMMON_PASSIVE
+Skill.Icon = "icons/item_cash"
+Skill.Desc = {}
+Skill.Desc["story"] = "You know how to work the shop keeper."
+Skill.Desc[1] = "You get a 2% discount on all items"
+Skill.Desc[2] = "You get a 4% discount on all items"
+Skill.Desc[3] = "You get a 6% discount on all items"
+Skill.Desc[4] = "You get a 8% discount on all items"
+Skill.Desc[5] = "You get a 10% discount on all items"
+Skill.Desc[6] = "You get a 15% discount on all items"
+Skill.Desc[7] = "You get a 20% discount on all items"
+Skill.Tier = 1
+Skill.Levels = 7
+Skill.Active = false
+Skill.Hooks = {}
+Skill.Hooks["price_mod"] = function(plyPlayer, intSkillLevel, intPrice)
+	if intSkillLevel > 0 then
+		local intDiscount = 2
+		if intSkillLevel == 2 then intDiscount = 4 end
+		if intSkillLevel == 3 then intDiscount = 6 end
+		if intSkillLevel == 4 then intDiscount = 8 end
+		if intSkillLevel == 5 then intDiscount = 10 end
+		if intSkillLevel == 6 then intDiscount = 15 end
+		if intSkillLevel == 7 then intDiscount = 20 end
+		intPrice = intPrice - (intPrice * (intDiscount / 100))
+	end
+	return intPrice
+end
+function Skill:OnSet(plyPlayer, intSkillLevel, intOldSkillLevel, load)
+	lvl_effect( plyPlayer, intSkillLevel, intOldSkillLevel, load )
+end
+Register.Skill(Skill)
